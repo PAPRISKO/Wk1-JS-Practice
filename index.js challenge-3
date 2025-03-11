@@ -1,0 +1,52 @@
+function calculateNetSalary(basicSalary, benefits) {
+    // Calculate Gross Salary
+    let grossSalary = basicSalary + benefits;
+    
+    // PAYE Tax Calculation 
+    let tax;
+    if (grossSalary <= 24000) {
+        tax = grossSalary * 0.10;
+    } else if (grossSalary <= 32333) {
+        tax = (24000 * 0.10) + ((grossSalary - 24000) * 0.25);
+    } else if (grossSalary <= 500000) {
+        tax = (24000 * 0.10) + (8333 * 0.25) + ((grossSalary - 32333) * 0.30);
+    } else if (grossSalary <= 800000) {
+        tax = (24000 * 0.10) + (8333 * 0.25) + (467667 * 0.30) + ((grossSalary - 500000) * 0.325);
+    } else {
+        tax = (24000 * 0.10) + (8333 * 0.25) + (467667 * 0.30) + (300000 * 0.325) + ((grossSalary - 800000) * 0.35);
+    }
+    
+    // Personal Relief
+    tax -= 2400;
+    if (tax < 0) tax = 0;
+    
+    // SHIF (2.75% of Gross Salary)
+    let shif = grossSalary * 0.0275;
+    
+    // NSSF Deductions (6% for Tier I and Tier II)
+    let nssf;
+    if (grossSalary <= 8000) {
+        nssf = grossSalary * 0.06;
+    } else {
+        nssf = (8000 * 0.06) + ((grossSalary - 8000) * 0.06);
+    }
+    
+    // Housing Levy (1.5% of Gross Salary)
+    let housingLevy = grossSalary * 0.015;
+    
+    // Net Salary Calculation
+    let netSalary = grossSalary - (tax + shif + nssf + housingLevy);
+    
+    return {
+        grossSalary: grossSalary,
+        tax: tax,
+        shif: shif,
+        nssf: nssf,
+        housingLevy: housingLevy,
+        netSalary: netSalary
+    };
+}
+
+// Usage
+let salaryDetails = calculateNetSalary(50000, 5000);
+console.log(salaryDetails);
